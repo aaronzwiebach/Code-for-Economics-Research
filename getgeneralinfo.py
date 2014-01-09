@@ -12,7 +12,7 @@ import csv
 import re
 import itertools
 
-#Method gets individuals unique Wiki-Name
+"""getnewwpmethod Method gets individuals unique Wiki-Name"""
 def getnewwpmethod(soup):
 	#Find all 'script' tags
 	result= str(soup.findAll('script'))
@@ -25,7 +25,7 @@ def getnewwpmethod(soup):
 	return newstring 
 
 
-#Gets files from lists of wiki htmls identical to rawdata   
+"""getfiles Method gets files from lists of wiki htmls identical to rawdata"""   
 def getfiles(foldername):
 
 	infile = "filelist.txt"
@@ -36,29 +36,30 @@ def getfiles(foldername):
 
 	return onlyfiles
 
-#Using nltk-get number of characters in the body of the wiki text
+"""getcharsizeinfo Method using nltk-get number of characters in the body of the wiki text"""
 def getcharsizeinfo(soup):
 	#Find all 'div' tags with 'id' attribute: content_wrapper
 	result= str(soup.findAll('div',{'id':'content_wrapper'}))#the body of the html page
 
-        clean_text = nltk.clean_html(result)
+    clean_text = nltk.clean_html(result)
 	return len(clean_text)
 
-#Method extracts date of revision written in plain text
+"""getlastrevdate Method extracts date of revision written in plain text"""
 def getlastrevdate(soup):
 	result= str(soup.findAll('a',{'id':'mw-mf-last-modified'}))#Find all <a> tags with attribute:'id':'mw-mf-last-modified'
 	newresult=result[result.find(">")+1:result.find("</a>")]
 	newerresult= newresult.strip("Last modified on ")
 	head, sep, tail = newerresult.partition(",")
 	return head
-#Method extracts time stamp of revision	
+
+"""gettimestamp Method extracts time stamp of revision"""	
 def gettimestamp(soup):
 	stamps=soup.findAll('a',{'id':'mw-mf-last-modified'})#Find all <a> tags with attribute:'id':'mw-mf-last-modified'    
 	for stamp in stamps:
 		return stamp['data-timestamp']
 
 
-#Method returns number of pictures on the page with width>75pxls
+"""getimginfo-Method returns number of pictures on the page with width>75pxls"""
 def getimginfo(soup, ):
 
     bigpix=[]
@@ -73,7 +74,7 @@ def getimginfo(soup, ):
 
     return len(bigpix)
 
-#Method calls each of the previous methods and outputs to a given outfile csv: unique wikiname, filenumber, #chars, #img, and a time stamp if there is one
+"""writelinescript1 Method calls each of the previous methods and outputs to a given outfile csv: unique wikiname, filenumber, #chars, #img, and a time stamp if there is one"""
 def writelinescript1(filename, outfile, soup):
 
 	 
@@ -87,7 +88,12 @@ def writelinescript1(filename, outfile, soup):
 	outline =finalwpname+ "\t" +filename+ "\t" + charsize+ "\t" + imgNum+ "\t" + timestamp+ "\n"
 	outfile.write(outline)
 	
-	
+"writegeneralinfocsv Method ties together all the previous methods in getgeneralinfo.py and writes info to the outfile"	
 def writegeneralinfocsv(person, revisionfile, outfile, soup):
 	writelinescript1(revisionfile, outfile, soup)
 	
+
+
+
+
+
